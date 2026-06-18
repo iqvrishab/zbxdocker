@@ -73,31 +73,6 @@ services:
       - zabbix-snmptraps-data:/var/lib/zabbix/snmptraps
     restart: unless-stopped
 
-  license-agent:
-    build:
-      context: ./license-agent
-      dockerfile: Dockerfile
-    container_name: license-agent
-    volumes:
-      - ./license/license.lic:/app/license.lic:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
-
-  license-proxy:
-    build:
-      context: ./license-proxy
-      dockerfile: Dockerfile
-    container_name: license-proxy
-    depends_on:
-      - zabbix-web
-      - license-agent
-    ports:
-      - "8080:3333"
-    volumes:
-      - ./license/license.lic:/app/license.lic:ro
-      - ./license-proxy/custom.html:/app/custom.html:ro
-    restart: unless-stopped
-
 volumes:
   mysql-data:
   zabbix-snmptraps-data:
